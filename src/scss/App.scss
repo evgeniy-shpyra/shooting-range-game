@@ -1,0 +1,10 @@
+@import 'sight.scss';
+@import 'target.scss';
+@import 'playing-field.scss';
+
+.App{
+    overflow: hidden;
+    cursor: none;
+    height: 100vh;
+    position: relative;
+}
