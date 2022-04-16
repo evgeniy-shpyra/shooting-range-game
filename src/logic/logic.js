@@ -34,8 +34,11 @@ const game = {
     inclusionCheck(enemies, { x, y }, width, height) {
 
         return enemies.map(e => {
-            if(x >= e.x && x <= e.x + width && y >= e.y && y <= e.y + height)
+            debugger
+            if(x >= e.x && x <= e.x + width && y >= e.y && y <= e.y + height){
+                debugger
                 return {...e, isActive: false}
+            }
             return e 
         })
     },

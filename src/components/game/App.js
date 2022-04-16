@@ -14,9 +14,10 @@ function App() {
 
   window.state = enemies
 
-
   const shot = (coordinates) => {
-    game.inclusionCheck(enemies, coordinates)
+    debugger
+    setEnemies(enemies => game.inclusionCheck(enemies, coordinates, width, height))
+    debugger
   }
 
   const updateInitializationData = event => {
