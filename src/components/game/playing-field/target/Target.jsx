@@ -1,10 +1,10 @@
-
 const Target = (props) => {
+
 
     return (
         <div className='target'
             style={{
-                position: 'relative',
+                position: 'absolute',
                 left: props.x,
                 top: props.y
             }}>

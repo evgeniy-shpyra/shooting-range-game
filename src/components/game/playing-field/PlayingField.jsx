@@ -1,16 +1,20 @@
 import Target from "./target/Target"
+import { useState } from 'react';
 
 const PlayingField = (props) => {
-    
+
     return (
         <div className="playing-field">
 
-           
-            <Target x={100} y={100} isActive={props.enemies[0].isActive} />
-            
-            <div className='playing-field__field'>
+            {props.enemies.map(e => (
+                <Target key={e.id} x={e.x} y={e.y} isActive={e.isActive} />
+            ))}
 
+
+            <div className="playing-field__floor floor">
+                <div className='floor__block'></div>
             </div>
+
         </div>
     )
 }

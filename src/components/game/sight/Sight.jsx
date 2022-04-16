@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import sightPng from '../../../images/sight.png'
-import game from './../../../logic/logic';
+
 
 const Sight = (props) => {
 
@@ -16,13 +16,8 @@ const Sight = (props) => {
         })
     }
 
-    const mouseClickHandler = event => {
-        
-        if(game.inclusionCheck(event.x, event.y)){
-            
-            props.killedEnemy()
-        }
-            
+    const mouseClickHandler = event => {  
+        props.shot({ x: event.x, y: event.y })
     }
 
     useEffect(() => {

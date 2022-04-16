@@ -1,12 +1,9 @@
 
 .target {
-    display: inline-block;
-    width: 100px;
-    height: 150px;
-    //background-color: rgba(24, 181, 165, 0.2);
+    width: 75px;
+    height: 100px;
     perspective:400px;
-    z-index: 5;
-    
+    z-index: 7;
     
     &__block {
         width: 100%;
