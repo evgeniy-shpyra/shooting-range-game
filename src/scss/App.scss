@@ -4,7 +4,8 @@
 
 .App{
     overflow: hidden;
-    
+    background-color: rgb(212, 249, 244);
     height: 100vh;
     position: relative;
+    user-select: none;
 }

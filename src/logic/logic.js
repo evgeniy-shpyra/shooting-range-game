@@ -3,19 +3,19 @@
 const game = {
 
     //--------------------------
-    initializationData(width, height, margin, count) {
+    initializationData(width, height, margin, count, freeHeight) {
         const enemies = []
-        const positions = this._generatePosition(width, height, margin, count)
+        const positions = this._generatePosition(width, height, margin, count, freeHeight)
 
         for (let i = 0; i < 5; i++) {
             enemies[i] = { id: i, x: positions[i].x, y: positions[i].y, strength: this._getRandomNum(1, 3), isActive: true }
         }
         return enemies
     },
-    _generatePosition(width, height, margin, count) {
+    _generatePosition(width, height, margin, count, freeHeight) {
         const positions = []
         const centerX = window.innerWidth / 2 - (width / 2)
-        const centerY = window.innerHeight / 2 - (height / 2)
+        const centerY = window.innerHeight / 2 - (height / 2) - freeHeight
 
         const dir = width + margin
 
@@ -29,12 +29,12 @@ const game = {
     //--------------------------
 
 
-    inclusionCheck(targets, { x, y }, width, height) {
+    inclusionCheck(targets, { x, y }, width, height, freeHeight) {
 
         let killedTargets = this._killedTargets(targets)
 
         let arr = targets.map(t => {
-            if (x >= t.x && x <= t.x + width && y >= t.y && y <= t.y + height) {
+            if (x >= t.x && x <= t.x + width && y >= t.y + freeHeight && y <= t.y + freeHeight + height) {
                 if (t.strength === 1) {
                     killedTargets++
                     return { ...t, isActive: false }

@@ -10,7 +10,7 @@ const Target = (props) => {
             timerId = setInterval(() => dispatch({ type: 'tick' }), 10);
             return () => clearInterval(timerId);
         }
-        
+
     }, [props.isActive])
 
 
@@ -21,14 +21,16 @@ const Target = (props) => {
                 left: props.x,
                 top: props.y
             }}>
+            <div className="target__points" style={!props.isActive ? { animationName: 'lifting-up' } : {}}>
+                +75
+            </div>
             <div className='target__block'
                 style={{
                     transform: `rotate3d(1,0,0, ${props.isActive ? 0 : 90}deg)`,
                     backgroundColor: `${props.strength === 3 ? '#b51d18'
                         : props.strength === 2 ? '#b58918' : '#18b5a4'}`
                 }}>
-
-                <div className="timer">
+                <div className="target__timer">
                     {`${state.sec} : ${state.milSec}`}
                 </div>
             </div>
@@ -48,7 +50,7 @@ const reducer = (state, action) => {
     switch (action.type) {
         case 'tick':
             return milSec === 0 ? { sec: sec - 1, milSec: 59 } : { sec: sec, milSec: milSec - 1 }
-        case 'updateTimer':             
+        case 'updateTimer':
             return { sec: 3, milSec: 0 }
         default: return state
     }

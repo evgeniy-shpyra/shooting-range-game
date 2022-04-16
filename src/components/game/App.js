@@ -6,16 +6,17 @@ import game from './../../logic/logic';
 
 const width = 75
 const height = 100
+const freeHeight = 70
 
 function App() {
 
-  let [enemies, setEnemies] = useState(game.initializationData(width, height, 80, 5))
+  let [enemies, setEnemies] = useState(game.initializationData(width, height, 80, 5, freeHeight))
   let [pos, setPos] = useState({x: 0, y: 0})
 
   window.state = enemies
   
   const shot = (coordinates) => {
-    setEnemies(enemies => game.inclusionCheck(enemies, coordinates, width, height))
+    setEnemies(enemies => game.inclusionCheck(enemies, coordinates, width, height, freeHeight))
   }
 
   const updateInitializationData = event => {
@@ -31,7 +32,7 @@ function App() {
   return (
     <div className='App' style={{cursor: 'none'}}>
       <Sight shot={shot} />
-      <PlayingField  enemies={enemies} pos={pos} />
+      <PlayingField  enemies={enemies}  />
     </div>
   );
 }
