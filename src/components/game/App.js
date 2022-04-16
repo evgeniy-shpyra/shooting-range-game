@@ -9,15 +9,13 @@ const height = 100
 
 function App() {
 
-
   let [enemies, setEnemies] = useState(game.initializationData(width, height, 80, 5))
+  let [pos, setPos] = useState({x: 0, y: 0})
 
   window.state = enemies
-
+  
   const shot = (coordinates) => {
-    debugger
     setEnemies(enemies => game.inclusionCheck(enemies, coordinates, width, height))
-    debugger
   }
 
   const updateInitializationData = event => {
@@ -31,10 +29,9 @@ function App() {
 
 
   return (
-    <div className='App'>
+    <div className='App' style={{cursor: 'none'}}>
       <Sight shot={shot} />
-      <PlayingField enemies={enemies} />
-
+      <PlayingField  enemies={enemies} pos={pos} />
     </div>
   );
 }

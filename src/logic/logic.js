@@ -10,7 +10,6 @@ const game = {
         for (let i = 0; i < 5; i++) {
             enemies[i] = { id: i, x: positions[i].x, y: positions[i].y, strength: this._getRandomNum(1, 3), isActive: true }
         }
-
         return enemies
     },
     _generatePosition(width, height, margin, count) {
@@ -29,19 +28,49 @@ const game = {
     },
     //--------------------------
 
-    
 
-    inclusionCheck(enemies, { x, y }, width, height) {
+    inclusionCheck(targets, { x, y }, width, height) {
 
-        return enemies.map(e => {
-            debugger
-            if(x >= e.x && x <= e.x + width && y >= e.y && y <= e.y + height){
-                debugger
-                return {...e, isActive: false}
+        let killedTargets = this._killedTargets(targets)
+
+        let arr = targets.map(t => {
+            if (x >= t.x && x <= t.x + width && y >= t.y && y <= t.y + height) {
+                if (t.strength === 1) {
+                    killedTargets++
+                    return { ...t, isActive: false }
+                }
+                else return { ...t, strength: --t.strength }
             }
-            return e 
+            else {
+                if (killedTargets > this._getRandomNum(1, 3) && !t.isActive && (killedTargets === 5 || Math.random() > 0.5)) {
+                    killedTargets--
+                    return { ...t, strength: this._getRandomNum(1, 3), isActive: true }
+                }
+            }
+            return t
         })
+
+
+        return arr
     },
+
+    _killedTargets(targets) {
+        let count = 0
+
+        targets.map(t => {
+            if (!t.isActive) {
+                count++
+            }
+            return t
+        })
+        return count
+    },
+
+    // _rebirthEnemy = (enemies) => {
+    //     return enemies.map(e => {
+    //         return e
+    //     })
+    // }
 
 
     _getRandomNum(min, max) {

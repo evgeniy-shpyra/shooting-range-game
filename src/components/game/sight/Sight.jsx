@@ -8,8 +8,8 @@ const Sight = (props) => {
 
 
     const mouseMoveHandler = event => {
-        console.log(`x: ${event.clientX}`)
-        console.log(`y: ${event.clientY}`)
+        // console.log(`x: ${event.clientX}`)
+        // console.log(`y: ${event.clientY}`)
         setPosition({
             x: event.clientX - 50,
             y: event.clientY - 50
