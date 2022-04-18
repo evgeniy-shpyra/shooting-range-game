@@ -1,23 +1,37 @@
 
 
 const game = {
-
+    target: {
+        width: null,
+        height: null,
+        freeHeight: null
+    },
+    sight: {
+        radius: null
+    },
     //--------------------------
-    initializationData(width, height, margin, count, freeHeight) {
+    initializationData(width, height, margin, count, freeHeight, sightRadius) {
+
+        this.target.width = width
+        this.target.height = height
+        this.target.freeHeight = freeHeight
+        this.sight.radius = sightRadius
+
         const enemies = []
-        const positions = this._generatePosition(width, height, margin, count, freeHeight)
+        const positions = this._generatePosition(margin, count)
 
         for (let i = 0; i < 5; i++) {
             enemies[i] = { id: i, x: positions[i].x, y: positions[i].y, strength: this._getRandomNum(1, 3), isActive: true }
         }
         return enemies
     },
-    _generatePosition(width, height, margin, count, freeHeight) {
-        const positions = []
-        const centerX = window.innerWidth / 2 - (width / 2)
-        const centerY = window.innerHeight / 2 - (height / 2) - freeHeight
 
-        const dir = width + margin
+    _generatePosition(margin, count) {
+        const positions = []
+        const centerX = window.innerWidth / 2 - (this.target.width / 2)
+        const centerY = window.innerHeight / 2 - (this.target.height / 2) - this.target.freeHeight
+
+        const dir = this.target.width + margin
 
         const firstX = centerX - (dir * Math.floor(count / 2))
 
@@ -29,15 +43,16 @@ const game = {
     //--------------------------
 
 
-    inclusionCheck(targets, { x, y }, width, height, freeHeight) {
-
+    inclusionCheck(targets, { x, y }) {
         let killedTargets = this._killedTargets(targets)
-
+        x += this.sight.radius
+        y += this.sight.radius
         let arr = targets.map(t => {
-            if (x >= t.x && x <= t.x + width && y >= t.y + freeHeight && y <= t.y + freeHeight + height) {
+            if (x >= t.x && x <= t.x + this.target.width && y >= t.y + this.target.freeHeight
+                && y <= t.y + this.target.freeHeight + this.target.height) {
                 if (t.strength === 1) {
                     killedTargets++
-                    return { ...t, isActive: false }
+                    return { ...t, strength: 0, isActive: false }
                 }
                 else return { ...t, strength: --t.strength }
             }

@@ -1,9 +1,10 @@
 
 .target {
     width: 75px;
-    height: 100px;
+    height: 120px;
     perspective:400px;
     z-index: 7;
+    text-align: center;
 
     &__points{
         width: 100%;
@@ -15,14 +16,11 @@
         color: rgb(255, 255, 255);
         transform: translate(0, 100px);
         opacity: 0;
+
         animation-duration: 2s;
         animation-timing-function: ease;
         animation-iteration-count: 1;
         animation-fill-mode: forwards;
-        
-        
-        //animation-play-state: paused;
-        
     }
   
     &__block {
@@ -36,10 +34,15 @@
         border-bottom: 3px solid #000;
     }
 
+    &__img{
+        width: auto;
+        height: 90px;
+        padding: 5px 0px 0px 0px;
+    }
+
     &__timer{
         color: white;
         text-align: center;
-        padding: 10px 0px 0px 0px;
         font-weight: 500;
         font-size: 16px;
     }
@@ -54,7 +57,6 @@
         opacity: 1;
         transform: translate(0, 0);
     }
-    
     100%{
         opacity: 0;
         transform: translate(0, 0);

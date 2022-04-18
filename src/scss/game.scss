@@ -1,0 +1,39 @@
+@import 'sight.scss';
+@import 'target.scss';
+@import 'playing-field.scss';
+
+.game{
+    overflow: hidden;
+    background-color: rgb(212, 249, 244);
+    height: 100vh;
+    position: relative;
+    user-select: none;
+
+    &__points{
+        position: absolute;
+        top: 20px;
+        right: 30px;
+    }
+}
+
+ 
+.points {
+    
+    display: flex;
+    align-items: center;
+
+    &__count {
+        font-size: 45px;
+        color: rgb(255, 255, 255);
+        font-weight: 900;
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+        padding: 0px 10px 0px 0px;
+    }
+
+    &__img {
+
+        width: 40px;
+            height: auto;
+    }
+}
+

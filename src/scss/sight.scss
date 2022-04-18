@@ -1,7 +1,50 @@
-.sight{
-    width: 100px;
-    height: 100px;
-    pointer-events: none;
-    z-index: 10;
-    
+
+.weapon {
+
+    &__sight {
+        width: 100px;
+        height: 100px;
+        pointer-events: none;
+        z-index: 10;
+        //animation-name: efficiency;
+        animation-duration: 0.2s;
+        animation-timing-function: ease-out;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+    }
+
+    &__type {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        z-index: 9;
+        height: 70px;
+        width: auto;
+    }
+
+    &__cartridges{
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9;
+        img{
+            height: 30px;
+            width: auto;
+            padding: 0px 5px;
+        }
+        
+    }
+}
+
+
+@keyframes efficiency {
+    0%{
+        transform: translate(0, 0px);
+    }
+    30%{
+        transform: translate(0, -20px);
+    }
+    100%{
+        transform: translate(0, 0px);
+    }
 }
