@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from 'react';
 import targetImg from '../../../../images/target.png'
+import { getRandomTime } from './setings';
 
 const Target = (props) => {
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -7,22 +8,31 @@ const Target = (props) => {
     useEffect(() => {
         dispatch({ type: 'updateTimer' })
         let timerId
-        // props.addPoints(state.points)
         if (!props.isActive)
             props.addPoints(state.points)
-
-        if (props.isActive) {
-
+        
+        if (props.isActive && props.isGameplay) {
+            
             dispatch({ type: 'resetPoints' })
             timerId = setInterval(() => dispatch({ type: 'tick' }), 10);
             return () => clearInterval(timerId);
         }
 
-    }, [props.isActive])
+    }, [props.isActive, props.isGameplay])
+
+    useEffect(() => {
+        dispatch({ type: 'setLevel', level: props.level })
+    }, [props.level])
 
     useEffect(() => {
         dispatch({ type: 'setPoints', strength: props.strength })
     }, [props.strength])
+
+    useEffect(() => {
+        if (state.time.sec <= 0 && state.time.milSec <= 0) {
+            props.loss()
+        }
+    }, [state.time])
 
     return (
         <div className='target'
@@ -55,8 +65,9 @@ export default Target
 
 
 const initialState = {
-    time: { sec: 3, milSec: 0 },
-    points: 0
+    time: { sec: 0, milSec: 0 },
+    points: 0,
+    level: 0
 };
 
 const reducer = (state, action) => {
@@ -69,7 +80,7 @@ const reducer = (state, action) => {
                 { ...state, time: { sec: state.time.sec, milSec: state.time.milSec - 1 } }
 
         case 'updateTimer':
-            return { ...state, time: { sec: 3, milSec: 0 } }
+            return { ...state, time: { sec: getRandomTime(state.level), milSec: 0 } }
 
         case 'setPoints':
             if (state.points === 0)
@@ -77,6 +88,9 @@ const reducer = (state, action) => {
             return state
         case 'resetPoints':
             return { ...state, points: 0 }
+        case 'setLevel':
+            return { ...state, level: action.level }
         default: return state
     }
 }
+

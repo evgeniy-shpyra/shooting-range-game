@@ -1,22 +1,26 @@
-import { useState, useEffect, useRef, useReducer } from 'react';
-import sightPng from '../../../images/sight.png'
-import weaponRevolver from '../../../images/weapon/revolver.png'
-import revolverCartridges from '../../../images/weapon/cartridges/revolverCartridges.png'
+import { useState, useEffect, useReducer } from 'react';
 
-const checkOfCartridges = (countCartridges) => {
+
+import { getCartridgesImg, getWeaponImg, getQuantityCartridges, getWeaponType, getSightImg } from './settings';
+
+const checkOfCartridges = (countCartridges, img) => {
     let cartridges = []
     for (let i = 0; i < countCartridges; i++)
-        cartridges = [...cartridges, <img key={i} src={revolverCartridges} alt="" />]
+        cartridges = [...cartridges, <img key={i} src={img} alt="" />]
     return cartridges
 }
 
 const Sight = (props) => {
 
     const [state, dispatch] = useReducer(reducer, initialState)
-    const [cartridgesImg, setCartridgesImg] = useState([])
+    const [cartridgesImgArr, setCartridgesImgArr] = useState([])
+    const [weaponImg, setWeaponImg] = useState()
+    const [cartridgesImg, setCartridgesImg] = useState()
+    const [sightImg, setSightImg] = useState()
+
 
     const mouseMoveHandler = event => {
-        dispatch({ type: 'move', position: { x: event.clientX - 50, y: event.clientY - 50 } })
+        dispatch({ type: 'move', position: { x: event.clientX - 30, y: event.clientY - 30 } })
     }
     const mouseClickHandler = event => {
         dispatch({ type: 'shot' })
@@ -24,32 +28,53 @@ const Sight = (props) => {
 
     useEffect(() => {
         if (state.isShot) {
-            setCartridgesImg(checkOfCartridges(state.cartridges))
 
             props.shot({ x: state.position.x, y: state.position.y })
 
             if (state.cartridges <= 0) {
-                dispatch({ type: 'recharge' })
+                props.massage('Recharge...')
                 setTimeout(() => {
                     dispatch({ type: 'readyToShoot' })
-                    setCartridgesImg(checkOfCartridges(6))
-                }, 3000)
+                    dispatch({ type: 'recharge' })
+                    props.massage()
+                }, 2000)
             }
             else {
                 setTimeout(() => {
                     dispatch({ type: 'readyToShoot' })
-                }, 200)
+                }, state.weapon.timeBetweenShots * 1000)
             }
-
-
         }
     }, [state.isShot])
 
     useEffect(() => {
-        setCartridgesImg(checkOfCartridges(state.cartridges))
-        window.addEventListener("click", mouseClickHandler)
+        dispatch({ type: 'setWeaponType', weapon: getWeaponType(props.points) })
+    }, [props.points])
+
+    useEffect(() => {
+        dispatch({ type: 'setCartridges' })
+        setWeaponImg(getWeaponImg(state.weapon.type))
+        setSightImg(getSightImg(state.weapon.type))
+        setCartridgesImg(getCartridgesImg(state.weapon.type))
+        props.setLevel(state.weapon.type)
+    }, [state.weapon.type])
+
+    useEffect(() => {
+        setCartridgesImgArr(checkOfCartridges(state.cartridges, cartridgesImg))
+    }, [state.cartridges, cartridgesImg])
+
+    useEffect(() => {
+        if (props.isReadout) {
+            dispatch({ type: 'recharge' })
+        }
+
+    }, [props.isReadout])
+
+    useEffect(() => {
+        if (props.isGameplay)
+            window.addEventListener("click", mouseClickHandler)
         return () => window.removeEventListener("click", mouseClickHandler)
-    }, [])
+    }, [props.isGameplay])
 
     useEffect(() => {
         window.addEventListener('mousemove', mouseMoveHandler)
@@ -58,23 +83,26 @@ const Sight = (props) => {
 
     return (
         <div className='weapon'>
-            <img className='weapon__sight' src={sightPng}
+            <img className='weapon__sight' src={sightImg}
                 style={{
                     position: 'absolute',
                     left: state.position.x,
                     top: state.position.y,
-                    animationName: state.isShot ? 'efficiency' : null
+                    animationName: state.isShot ? 'efficiency' : null,
+                    animationDuration: `${state.weapon.timeBetweenShots}s`
                 }}
             />
-            <img src={weaponRevolver} alt="" className="weapon__type" />
+            <img src={weaponImg} alt="" className="weapon__type" />
             <div className='weapon__cartridges'>
-                {[...cartridgesImg]}
+                {[...cartridgesImgArr]}
             </div>
         </div>
     )
 }
 
 export default Sight
+
+
 
 const initialState = {
     position: {
@@ -83,9 +111,8 @@ const initialState = {
     },
     isShot: false,
     isSingleShooting: true,
-    weaponType: 1,
-    cartridges: 6,
-    isCharged: true
+    weapon: { type: 1, timeBetweenShots: 0.2 },
+    cartridges: null
 };
 
 const reducer = (state, action) => {
@@ -99,9 +126,18 @@ const reducer = (state, action) => {
             }
             return state
         case 'recharge':
-            return { ...state, cartridges: 6 }
+            return { ...state, cartridges: getQuantityCartridges(state.weapon.type) }
         case 'readyToShoot':
             return { ...state, isShot: false }
+        case 'setWeaponType':
+            if (!state.cartridges)
+                return { ...state, weapon: action.weapon }
+            return { ...state, weapon: action.weapon }
+        case 'setCartridges':
+            return { ...state, cartridges: getQuantityCartridges(state.weapon.type) }
+
         default: return state
     }
 }
+
+
