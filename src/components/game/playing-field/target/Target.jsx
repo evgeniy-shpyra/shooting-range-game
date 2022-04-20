@@ -8,25 +8,22 @@ const Target = (props) => {
     useEffect(() => {
         dispatch({ type: 'updateTimer' })
         let timerId
-        if (!props.isActive)
+        if (!props.isActive){
             props.addPoints(state.points)
-        
+        }
         if (props.isActive && props.isGameplay) {
-            
-            dispatch({ type: 'resetPoints' })
+            dispatch({ type: 'setPoints', strength: props.strength })
             timerId = setInterval(() => dispatch({ type: 'tick' }), 10);
             return () => clearInterval(timerId);
         }
 
     }, [props.isActive, props.isGameplay])
 
+
     useEffect(() => {
         dispatch({ type: 'setLevel', level: props.level })
     }, [props.level])
 
-    useEffect(() => {
-        dispatch({ type: 'setPoints', strength: props.strength })
-    }, [props.strength])
 
     useEffect(() => {
         if (state.time.sec <= 0 && state.time.milSec <= 0) {
@@ -83,9 +80,8 @@ const reducer = (state, action) => {
             return { ...state, time: { sec: getRandomTime(state.level), milSec: 0 } }
 
         case 'setPoints':
-            if (state.points === 0)
-                return { ...state, points: 30 * action.strength }
-            return state
+            return { ...state, points: 30 * action.strength }
+
         case 'resetPoints':
             return { ...state, points: 0 }
         case 'setLevel':

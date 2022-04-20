@@ -41,7 +41,7 @@ const Game = (props) => {
     setPoints(0)
     setIsLoss(false)
     setIsReadout(true)
-    isGameplay(false)
+    setIsGameplay(false)
     
   }
   const loss = () => {

@@ -25,7 +25,6 @@ export const getCartridgesImg = (weaponType) => {
     else if (weaponType === 3)
         return m4Cartridges
 }
-
 export const getSightImg = (weaponType) => {
     if (weaponType === 1)
         return sightRevolver
