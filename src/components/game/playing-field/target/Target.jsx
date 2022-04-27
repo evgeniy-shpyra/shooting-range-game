@@ -47,7 +47,6 @@ const Target = (props) => {
                     backgroundColor: `${props.strength === 3 ? '#b51d18'
                         : props.strength === 2 ? '#b58918' : '#18b5a4'}`
                 }}>
-
                 <img className='target__img' src={targetImg} alt="" />
 
                 <div className="target__timer">

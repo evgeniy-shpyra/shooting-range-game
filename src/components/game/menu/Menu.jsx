@@ -1,14 +1,16 @@
-import './../../../scss/menu.scss';
-import { NavLink } from 'react-router-dom';
+import "./../../../scss/menu.scss";
+import { NavLink } from "react-router-dom";
 const Menu = (props) => {
     return (
-        <div className='menu'>
-            <div className="menu__name">Game Name</div>
-            <NavLink to={'/game'} className="menu__btn btn">Play</NavLink>
+        <div className="menu__container">
+            <div className="menu">
+                <div className="menu__name">Shooting gallery</div>
+                <NavLink to={"/game"} className="menu__btn btn">
+                    Play
+                </NavLink>
+            </div>
         </div>
+    );
+};
 
-    )
-
-}
-
-export default Menu
+export default Menu;
