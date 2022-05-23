@@ -5,7 +5,6 @@ const PlayingField = (props) => {
 
     return (
         <div className="playing-field">
-
             {props.enemies.map(e => (
                 <Target key={e.id} x={e.x} y={e.y} strength={e.strength}
                     isActive={e.isActive} addPoints={props.addPoints}
